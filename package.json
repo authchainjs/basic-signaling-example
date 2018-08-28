@@ -1,0 +1,24 @@
+{
+    "name": "basic-signaling-example",
+    "description": "Simple WebRTC WebSocket Signaling Example",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": {
+        "name": "Lauro Moraes",
+        "email": "subversivo58@gmail.com",
+        "url": "https://github.com/subversivo58"
+    },
+    "dependencies": {
+        "dotenv": "^4.0.0",
+        "uws": "10.148.1"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/authchainjs/basic-signaling-example/issues"
+    },
+    "engines": {
+        "node": "^8.9.1",
+        "npm": "^6.0.0"
+    },
+    "private": true
+}
