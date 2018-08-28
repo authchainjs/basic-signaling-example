@@ -16,16 +16,6 @@ const fs = require('fs')
 const PORT = process.env.PORT || 3000
 const WebSocketServer = require('uws').Server
 
-/**
-const output = fs.createWriteStream('./stdout.log')
-const errorOutput = fs.createWriteStream('./stderr.log')
-// custom simple logger
-const logger = new Console({
-    stdout: output,
-    stderr: errorOutput
-})
- */
-
 
 /** SERVER LOGIC ---------------------------------------------------------------------------------|
  * Instance server for static files and base to WebSockets (uws)
@@ -51,13 +41,6 @@ const originIsAllowed = origin => {
 // list of backbones signaling servers on collaborate to this P2P network
 const BACKNODES = [
     'ws://localhost/signaling' // localhost example
-    /**
-
-    'ws://127.0.0.1:8088/p2p',                    // other example
-    'ws://another-domain:3000/sig',               // another example
-    'wss://fake-non-real-signaling.herokuapp.com' // bad e.g. don't use this
-
-     */
 ]
 
 // store channels
@@ -88,7 +71,7 @@ const wss = new WebSocketServer({
         // Origin (unstrusted info):
         let socketOrigin = info.origin || socketHeaders.origin || null
 
-        // @TODO: for security, check "isSecure"
+        // @TODO: for security (TLS), check "isSecure"
         if ( /*!isSecure || */!originIsAllowed(socketOrigin) ) {
             // @TODO: log here
             cb(false, 401, 'Unauthorized')
@@ -290,9 +273,6 @@ wss.on('connection', function(ws) {
     ws.isAlive = true
 
     ws.on('pong', () => ws.isAlive = true)
-    // console.log(`New socket: ${ws.id}, has been connected`)
-    // show all sockets id's
-    // console.log('List of sockets: ', listIds)
 
     // console.log(wss.clients)
     ws.on('message', function(message) {
@@ -302,10 +282,9 @@ wss.on('connection', function(ws) {
             // @TODO: log here? - not valid `JSON` ... close connection
             ws.terminate()
         }
-    });
+    })
 
     ws.on('close', function(CloseEventCode) {
-        // console.log(`Socket id: ${ws.id}, hass been closed: ${CloseEventCode}`)
         // remove socket id from list
         if ( WebSocketsIds.includes(ws.id) ) {
             let index = WebSocketsIds.indexOf(ws.id)
@@ -317,10 +296,6 @@ wss.on('connection', function(ws) {
     })
 
 })
-
-// wss.broadcast('xxxxxxxx-yyyyyy')
-
-// wss.startAutoPing(30000, '')
 
 // heartbeat
 const interval = setInterval(() => {
